@@ -1,5 +1,6 @@
 %define build_plf 0
 %{?_with_plf: %{expand: %%global build_plf 1}}
+%define _disable_lto 1
 
 ######################
 # Hardcode PLF build
@@ -22,7 +23,7 @@ Release:	1%{?extrarelsuffix}
 License:	LGPLv2+
 Group:		Sound
 Url:		http://sox.sourceforge.net/
-Source0:	http://heanet.dl.sourceforge.net/sourceforge/sox/%{name}-%{version}.tar.bz2
+Source0:	https://downloads.sourceforge.net/project/sox/sox/%{version}/sox-%{version}.tar.bz2
 BuildRequires:	gomp-devel
 BuildRequires:	gsm-devel
 BuildRequires:	ladspa-devel
@@ -39,8 +40,8 @@ BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	pkgconfig(theora)
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(wavpack)
-%if %{build_plf}
 BuildRequires:	lame-devel
+%if %{build_plf}
 BuildRequires:	libamrwb-devel
 BuildRequires:	libamrnb-devel
 %endif
@@ -56,7 +57,7 @@ Install the sox package if you'd like to convert sound file formats
 or manipulate some sounds.
 
 %if %{build_plf}
-This package is in restricted as it was build with lame encoder
+This package is in restricted as it was build with AMR encoder
 support, which is in restricted.
 %endif
 
