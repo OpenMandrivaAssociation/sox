@@ -19,7 +19,7 @@
 Summary:	A general purpose sound file conversion tool
 Name:		sox
 Version:	14.4.2
-Release:	3%{?extrarelsuffix}
+Release:	4%{?extrarelsuffix}
 License:	LGPLv2+
 Group:		Sound
 Url:		http://sox.sourceforge.net/
