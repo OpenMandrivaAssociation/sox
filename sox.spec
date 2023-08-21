@@ -118,7 +118,8 @@ ln -s play.1%{_extension} %{buildroot}%{_mandir}/man1/rec.1%{_extension}
 %{_mandir}/man7/*
 
 %files -n %{libname}
-%{_libdir}/libsox.so.%{major}*
+%{_libdir}/libsox.so.%{major}*	
+%{_libdir}/sox/libsox_fmt_*.so
 
 %files -n %{devname}
 %{_includedir}/*.h
