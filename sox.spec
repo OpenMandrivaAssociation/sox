@@ -48,6 +48,8 @@ BuildRequires:	libamrwb-devel
 BuildRequires:	libamrnb-devel
 %endif
 
+Requires:	%{libname} = %{version}-%{release}
+
 %description
 SoX (Sound eXchange) is a sound file format converter for Linux,
 UNIX and DOS PCs. The self-described 'Swiss Army knife of sound
