@@ -88,7 +88,9 @@ export CFLAGS="%{optflags} -DHAVE_SYS_SOUNDCARD_H=1 -D_FILE_OFFSET_BITS=64 -fPIC
 
 %configure \
 	--disable-static \
-	--with-ladspa-path=%{_includedir}
+	--with-ladspa-path=%{_includedir} \
+ 	--with-dyn-default \
+        --enable-dl-sndfile
 %make_build
 
 %install
