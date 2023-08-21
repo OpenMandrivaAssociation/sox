@@ -35,6 +35,8 @@ BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(id3tag)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(mad)
+BuildRequires:	pkgconfig(opus)
+BuildRequires:	pkgconfig(libpulse)
 BuildRequires:	pkgconfig(samplerate)
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	pkgconfig(theora)
@@ -86,12 +88,11 @@ export CFLAGS="%{optflags} -DHAVE_SYS_SOUNDCARD_H=1 -D_FILE_OFFSET_BITS=64 -fPIC
 
 %configure \
 	--disable-static \
- 	--enable-formats=dyn
 	--with-ladspa-path=%{_includedir}
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 ln -sf play %{buildroot}%{_bindir}/rec
 
