@@ -19,7 +19,7 @@
 Summary:	A general purpose sound file conversion tool
 Name:		sox
 Version:	14.4.2
-Release:	7%{?extrarelsuffix}
+Release:	8%{?extrarelsuffix}
 License:	LGPLv2+
 Group:		Sound
 Url:		http://sox.sourceforge.net/
@@ -86,6 +86,7 @@ export CFLAGS="%{optflags} -DHAVE_SYS_SOUNDCARD_H=1 -D_FILE_OFFSET_BITS=64 -fPIC
 
 %configure \
 	--disable-static \
+ 	--enable-formats=dyn
 	--with-ladspa-path=%{_includedir}
 %make
 
