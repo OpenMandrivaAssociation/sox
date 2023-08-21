@@ -19,7 +19,7 @@
 Summary:	A general purpose sound file conversion tool
 Name:		sox
 Version:	14.4.2
-Release:	7%{?extrarelsuffix}
+Release:	8%{?extrarelsuffix}
 License:	LGPLv2+
 Group:		Sound
 Url:		http://sox.sourceforge.net/
@@ -35,6 +35,8 @@ BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(id3tag)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(mad)
+BuildRequires:	pkgconfig(opus)
+BuildRequires:	pkgconfig(libpulse)
 BuildRequires:	pkgconfig(samplerate)
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	pkgconfig(theora)
@@ -86,11 +88,13 @@ export CFLAGS="%{optflags} -DHAVE_SYS_SOUNDCARD_H=1 -D_FILE_OFFSET_BITS=64 -fPIC
 
 %configure \
 	--disable-static \
-	--with-ladspa-path=%{_includedir}
-%make
+	--with-ladspa-path=%{_includedir} \
+ 	--with-dyn-default \
+        --enable-dl-sndfile
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 ln -sf play %{buildroot}%{_bindir}/rec
 
@@ -114,7 +118,8 @@ ln -s play.1%{_extension} %{buildroot}%{_mandir}/man1/rec.1%{_extension}
 %{_mandir}/man7/*
 
 %files -n %{libname}
-%{_libdir}/libsox.so.%{major}*
+%{_libdir}/libsox.so.%{major}*	
+%{_libdir}/sox/libsox_fmt_*.so
 
 %files -n %{devname}
 %{_includedir}/*.h
