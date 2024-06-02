@@ -50,6 +50,11 @@ BuildRequires:	libamrnb-devel
 
 Requires:	%{libname} = %{version}-%{release}
 
+BuildSystem:	autotools
+BuildOption:	--with-ladspa-path=%{_includedir}
+BuildOption: 	--with-dyn-default
+BuildOption:	--enable-dl-sndfile
+
 %description
 SoX (Sound eXchange) is a sound file format converter for Linux,
 UNIX and DOS PCs. The self-described 'Swiss Army knife of sound
@@ -81,22 +86,10 @@ Provides:	%{name}-devel = %{version}-%{release}
 %description -n %{devname}
 Development headers and libraries for SoX.
 
-%prep
-%setup -q
-#autoreconf -fis
-
-%build
+%conf -p
 export CFLAGS="%{optflags} -DHAVE_SYS_SOUNDCARD_H=1 -D_FILE_OFFSET_BITS=64 -fPIC -DPIC"
 
-%configure \
-	--disable-static \
-	--with-ladspa-path=%{_includedir} \
- 	--with-dyn-default \
-        --enable-dl-sndfile
-%make_build
-
-%install
-%make_install
+%install -a
 
 ln -sf play %{buildroot}%{_bindir}/rec
 
