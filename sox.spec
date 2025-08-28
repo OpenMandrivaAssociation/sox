@@ -1,6 +1,5 @@
 %define build_plf 0
 %{?_with_plf: %{expand: %%global build_plf 1}}
-%define _disable_lto 1
 
 ######################
 # Hardcode PLF build
@@ -18,12 +17,16 @@
 
 Summary:	A general purpose sound file conversion tool
 Name:		sox
-Version:	14.4.2
-Release:	9%{?extrarelsuffix}1
+Version:	14.6.0.4
+Release:	1%{?extrarelsuffix}
 License:	LGPLv2+
 Group:		Sound
-Url:		https://sox.sourceforge.net/
-Source0:	https://downloads.sourceforge.net/project/sox/sox/%{version}/sox-%{version}.tar.bz2
+# Original project:
+#Url:		https://sox.sourceforge.net/
+#Source0:	https://downloads.sourceforge.net/project/sox/sox/%{version}/sox-%{version}.tar.bz2
+# Fork that is still maintained:
+Url:		https://codeberg.org/sox_ng/sox_ng
+Source0:	https://codeberg.org/sox_ng/sox_ng/releases/download/sox_ng-%{version}/sox_ng-%{version}.tar.gz
 BuildRequires:	gomp-devel
 BuildRequires:	gsm-devel
 BuildRequires:	ladspa-devel
@@ -42,6 +45,8 @@ BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	pkgconfig(theora)
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(wavpack)
+BuildRequires:	pkgconfig(libavcodec)
+BuildRequires:	pkgconfig(libavformat)
 BuildRequires:	lame-devel
 %if %{build_plf}
 BuildRequires:	libamrwb-devel
@@ -51,9 +56,14 @@ BuildRequires:	libamrnb-devel
 Requires:	%{libname} = %{version}-%{release}
 
 BuildSystem:	autotools
+BuildOption:	--with-distro=OpenMandriva
+BuildOption:	--with-ffmpeg
 BuildOption:	--with-ladspa-path=%{_includedir}
 BuildOption: 	--with-dyn-default
 BuildOption:	--enable-dl-sndfile
+
+%patchlist
+sox-ng-actually-find-the-plugins.patch
 
 %description
 SoX (Sound eXchange) is a sound file format converter for Linux,
@@ -90,35 +100,44 @@ Development headers and libraries for SoX.
 export CFLAGS="%{optflags} -DHAVE_SYS_SOUNDCARD_H=1 -D_FILE_OFFSET_BITS=64 -fPIC -DPIC"
 
 %install -a
-
-ln -sf play %{buildroot}%{_bindir}/rec
-
-cat << EOF > %{buildroot}%{_bindir}/soxplay
-#!/bin/sh
-
-%{_bindir}/sox \$1 -t .au - > /dev/audio
-
-EOF
-chmod 755 %{buildroot}%{_bindir}/soxplay
-
-ln -snf play %{buildroot}%{_bindir}/rec
-ln -s play.1%{_extension} %{buildroot}%{_mandir}/man1/rec.1%{_extension}
+cd %{buildroot}%{_bindir}
+for i in *_ng; do
+	ln -s $i ${i/_ng/}
+done
+cd %{buildroot}%{_libdir}
+for i in libsox_ng.so*; do
+	ln -s $i ${i/_ng/}
+done
+ln -s sox_ng.pc pkgconfig/sox.pc
+# We place the symlink in the "wrong" direction here
+# to work around the "don't replace directories with symlinks"
+# rule in rpm
+mv sox_ng sox
+ln -s sox sox_ng
 
 %files
-%doc ChangeLog README NEWS AUTHORS
+%doc ChangeLog README AUTHORS
 %{_bindir}/play
 %{_bindir}/rec
-%{_bindir}/sox*
+%{_bindir}/sox
+%{_bindir}/soxi
+%{_bindir}/play_ng
+%{_bindir}/rec_ng
+%{_bindir}/sox_ng
+%{_bindir}/soxi_ng
 %{_mandir}/man1/*
 %{_mandir}/man7/*
 
 %files -n %{libname}
-%{_libdir}/libsox.so.%{major}*	
-%{_libdir}/sox/libsox_fmt_*.so
+%{_libdir}/libsox_ng.so.%{major}*
+%{_libdir}/libsox.so.%{major}*
+%{_libdir}/sox
+%{_libdir}/sox_ng
 
 %files -n %{devname}
 %{_includedir}/*.h
 %{_libdir}/libsox.so
+%{_libdir}/libsox_ng.so
 %{_libdir}/pkgconfig/sox.pc
+%{_libdir}/pkgconfig/sox_ng.pc
 %{_mandir}/man3/*
-

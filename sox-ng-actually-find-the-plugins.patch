@@ -1,0 +1,12 @@
+diff -up sox-14.6.0.4/src/formats.c.omv~ sox-14.6.0.4/src/formats.c
+--- sox-14.6.0.4/src/formats.c.omv~	2025-08-28 15:20:31.531669549 +0200
++++ sox-14.6.0.4/src/formats.c	2025-08-28 15:20:49.491352729 +0200
+@@ -1562,7 +1562,7 @@ sox_get_format_fns(void)
+   {
+     lt_dlhandle lth = lt_dlopenext(file);
+     const char *end = file + strlen(file);
+-    const char prefix[] = "sox_fmt_";
++    const char prefix[] = "sox_ng_fmt_";
+     char fnname[MAX_NAME_LEN];
+     char *start = strstr(file, prefix);
+ 
