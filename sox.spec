@@ -115,6 +115,7 @@ ln -s sox_ng.pc pkgconfig/sox.pc
 mv sox_ng sox
 ln -s sox sox_ng
 
+# symlink needed by mlt
 ln -s sox_ng.h %{buildroot}%{_includedir}/sox.h
 
 %files
