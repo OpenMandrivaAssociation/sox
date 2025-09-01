@@ -18,7 +18,7 @@
 Summary:	A general purpose sound file conversion tool
 Name:		sox
 Version:	14.6.0.4
-Release:	1%{?extrarelsuffix}
+Release:	2%{?extrarelsuffix}
 License:	LGPLv2+
 Group:		Sound
 # Original project:
@@ -114,6 +114,8 @@ ln -s sox_ng.pc pkgconfig/sox.pc
 # rule in rpm
 mv sox_ng sox
 ln -s sox sox_ng
+
+ln -s sox_ng.h %{buildroot}%{_includedir}/sox.h
 
 %files
 %doc ChangeLog README AUTHORS
