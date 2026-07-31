@@ -17,8 +17,8 @@
 
 Summary:	A general purpose sound file conversion tool
 Name:		sox
-Version:	14.6.0.4
-Release:	2%{?extrarelsuffix}
+Version:	14.8.0.1
+Release:	1%{?extrarelsuffix}
 License:	LGPLv2+
 Group:		Sound
 # Original project:
@@ -63,7 +63,7 @@ BuildOption: 	--with-dyn-default
 BuildOption:	--enable-dl-sndfile
 
 %patchlist
-sox-ng-actually-find-the-plugins.patch
+# dropped (no longer applies): sox-ng-actually-find-the-plugins.patch
 
 %description
 SoX (Sound eXchange) is a sound file format converter for Linux,
